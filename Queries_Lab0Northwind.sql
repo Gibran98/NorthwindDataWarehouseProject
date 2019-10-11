@@ -9,13 +9,23 @@ where p.ProductID in
 	order by count(od.ProductID) desc);
 
 /* Q2. Cual es el total de ventas (dinero) en 1996? */
+/*select o.freight
+from Lab0_NorthwindDB.dbo.Orders o
+where year(o.OrderDate) = 1996*/
 
+select sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas1996
+from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
+where od.OrderID = o.OrderID and year(o.OrderDate) = 1996
 
 /* Q3. Cual es el total de ventas(dinero) en 1997? */
-
+select sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas1997
+from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
+where od.OrderID = o.OrderID and year(o.OrderDate) = 1997
 
 /* Q4. Cual es el total de ventas en todos los años incluidos en la DB? */
-
+select sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas
+from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
+where od.OrderID = o.OrderID
 
 /* Q5. Cual region tuvo mas ventas (dinero) en 1997? */
 
