@@ -38,7 +38,7 @@ create table DimProduct (
 	region nvarchar (15),
 	postalCode nvarchar (10),
 	country nvarchar (15),
-	primary key (productID)
+	primary key (productID),
 );
 
 create table FactSales (

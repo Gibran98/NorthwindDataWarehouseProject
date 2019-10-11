@@ -48,5 +48,11 @@ Insert into DimProduct
 	from Lab0_NorthwindDB.dbo.Products p, Lab0_NorthwindDB.dbo.Suppliers s, Lab0_NorthwindDB.dbo.Categories c
 	where p.CategoryID = c.CategoryID and p.SupplierID = s.SupplierID;
 
-/* Insertar datos a factsTable juntando todas las dimensiones */
-
+/* Insertar datos a factsTable juntando todas las dimensiones 
+----COMENTADA PORQUE TODAVIA NO FUNCIONA----
+error que marca: 'The multi-part identifier ".UnitPrice" could not be bound.'
+Insert into FactSales
+	select p.ProductID, e.EmployeeID, c.CustomerID, t.orderDate, d.OrderID, d.Quantity, d.UnitPrice, d.Discount as discountPercent,  (d.Quantity*.UnitPrice*d.Discount) as discountAmount, (d.Quantity*d.UnitPrice*(1-d.Discount)) as total
+	from DimProduct p, DimEmployee e, DimCustomer c, DimTime t, Lab0_NorthwindDB.dbo.[Order Details] d, Lab0_NorthwindDB.dbo.Orders o
+	where p.productID = d.ProductID and d.OrderID = o.OrderID and o.EmployeeID = e.EmployeeID and o.CustomerID = c.CustomerID and t.orderDate = o.OrderDate
+*/
