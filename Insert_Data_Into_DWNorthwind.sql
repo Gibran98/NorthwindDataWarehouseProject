@@ -49,7 +49,11 @@ Insert into DimProduct
 	where p.CategoryID = c.CategoryID and p.SupplierID = s.SupplierID;
 
 /* Insertar datos a factsTable juntando todas las dimensiones */
-Insert into FactSales
-	select p.ProductID, e.EmployeeID, c.CustomerID, t.orderDate, d.OrderID, d.Quantity, d.UnitPrice, d.Discount as discountPercent,  (d.Quantity*d.UnitPrice*d.Discount) as discountAmount, (d.Quantity*d.UnitPrice*(1-d.Discount)) as total
-	from DimProduct p, DimEmployee e, DimCustomer c, DimTime t, Lab0_NorthwindDB.dbo.[Order Details] d, Lab0_NorthwindDB.dbo.Orders o
-	where p.productID = d.ProductID and d.OrderID = o.OrderID and o.EmployeeID = e.EmployeeID and o.CustomerID = c.CustomerID and t.orderDate = o.OrderDate
+Insert into DWNorthwind.dbo.FactSales
+select od.ProductID, o.EmployeeID, o.CustomerID, o.OrderDate , 
+o.orderID, od.quantity, od.unitPrice, 
+od.discount, 
+od.unitPrice * od.quantity * od.discount as discountAmount, 
+od.unitPrice * od.quantity * (1 - od.discount) as total 
+from Lab0_NorthwindDB.dbo.Orders o, Lab0_NorthwindDB.dbo.[Order Details] od 
+where o.OrderID = od.OrderID;
