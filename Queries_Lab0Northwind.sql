@@ -28,9 +28,23 @@ from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
 where od.OrderID = o.OrderID
 
 /* Q5. Cual region tuvo mas ventas (dinero) en 1997? */
-
+select top 1 with ties e.region as Region, sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas1997
+from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o, Lab0_NorthwindDB.dbo.Employees e
+where od.OrderID = o.OrderID and o.EmployeeID = e.EmployeeID and year(o.OrderDate) = 1997
+group by e.Region
+order by sum(od.UnitPrice*od.Quantity*(1-od.discount)) desc;
 
 /* Q6. Para la respuesta de Q5 (region), cual es el estado (si es USA) o pais (region diferente a USA) que mas vendio en 1997? */
-
+select top 1 with ties e.region 
+from (select top 1 with ties e.region as Region, sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas1997
+		from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o, Lab0_NorthwindDB.dbo.Employees e
+		where od.OrderID = o.OrderID and o.EmployeeID = e.EmployeeID and year(o.OrderDate) = 1997
+		group by e.Region
+		order by sum(od.UnitPrice*od.Quantity*(1-od.discount)) desc) as e
+order by e.Region;
 
 /* Q7. Cual es el total de ventas en total (todos los años) organizado por Region, Estado y/o pais? */
+select e.region as Region, sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas
+from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o, Lab0_NorthwindDB.dbo.Employees e
+where od.OrderID = o.OrderID and o.EmployeeID = e.EmployeeID
+group by e.Region
