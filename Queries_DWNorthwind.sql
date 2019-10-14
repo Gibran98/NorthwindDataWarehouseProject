@@ -31,12 +31,13 @@ group by E.Region
 order by [Sales] desc;
 
 /* Q6. Para la respuesta de Q5 (region), cual es el estado (si es USA) o pais (region diferente a USA) que mas vendio en 1997? */
+-- Opcion 1
 declare @country varchar(15);
 select top(1) @country=T.Country
 from (select top(1) E.Country, E.Region 
   from DimEmployee E, FactSales F
   where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997
-  group by E.Country
+  group by E.Country, E.Region
   order by sum(F.total) desc) as T;
 
 if @country = 'USA'
@@ -56,4 +57,33 @@ begin
   order by [Sales] desc;
 end
 
+-- Opcion 2
+select top(1) T.Places as 'Country or USA State', T.Sales
+from (
+  select top(1) E.Region as 'Places', sum(F.Total) as 'Sales'
+  from DimEmployee E, FactSales F
+  where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997 and E.country = 'USA'
+  group by E.Region
+  order by [Sales] desc
+  union
+  select top(1) E.Country as 'Places', sum(F.Total) as 'Sales'
+  from DimEmployee E, FactSales F
+  where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997 and E.Country != 'USA'
+  group by E.Country
+  order by [Sales] desc
+) as T
+
+
 /* Q7. Cual es el total de ventas en total (todos los a�os) organizado por Region, Estado y/o pais? */
+
+--Ventas por pais
+select E.Country, sum(F.Total) as 'Sales'
+from DimEmployee E, FactSales F
+where E.EmployeeID = F.EmployeeID
+group by E.Country
+union
+--Ventas por region/estado
+select E.Region, sum(F.Total) as 'Sales'
+from DimEmployee E, FactSales F
+where E.EmployeeID = F.EmployeeID
+group by E.Region
