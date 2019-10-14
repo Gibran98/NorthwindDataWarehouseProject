@@ -5,20 +5,20 @@ go
 use DWNorthwind
 
 create table DimCustomer (
-	CustomerID nchar(5),
-	CustomerName nvarchar (30),
-	City nvarchar (15),
-	Country nvarchar (15),
-	Region nvarchar (15),
+	CustomerID char(5),
+	CustomerName varchar (30),
+	City varchar (15),
+	Country varchar (15),
+	Region varchar (15),
 	primary key (CustomerID)
 );
 
 create table DimEmployee (
 	EmployeeID int,
-	Name nvarchar (30),
-	City nvarchar (15),
-	Country nvarchar (15),
-	Region nvarchar (15),
+	Name varchar (30),
+	City varchar (15),
+	Country varchar (15),
+	Region varchar (15),
 	hiredate datetime,
 	primary key (EmployeeID)
 );
@@ -30,21 +30,21 @@ Create table DimTime (
 
 create table DimProduct (
 	ProductID int,
-	ProductName nvarchar (40),
-	categoryName nvarchar (15),
-	supplierName nvarchar (30),
-	pAddress nvarchar (60),
-	city nvarchar (15),
-	region nvarchar (15),
-	postalCode nvarchar (10),
-	country nvarchar (15),
+	ProductName varchar (40),
+	categoryName varchar (15),
+	supplierName varchar (30),
+	pAddress varchar (60),
+	city varchar (15),
+	region varchar (15),
+	postalCode varchar (10),
+	country varchar (15),
 	primary key (productID),
 );
 
 create table FactSales (
 	ProductID int ,
 	EmployeeID int ,
-	CustomerID nchar(5) ,
+	CustomerID char(5) ,
 	orderDate datetime ,
 	OrderID int,
 	Quantity smallint,
