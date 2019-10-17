@@ -28,22 +28,22 @@ set Region = 'North America'
 where Region is null and Country in ('Mexico');
 
 /* Insertar datos a DimTime de Orders */
-Insert into DimTime
+Insert into DWNorthwind.dbo.DimTime
 	select distinct o.OrderDate
 	from Lab0_NorthwindDB.dbo.Orders o;
 
 /* Insertar datos a dimEmployee de Employee */
-Insert into DimEmployee
+Insert into DWNorthwind.dbo.DimEmployee
 	select e.EmployeeID, (e.FirstName + ' ' + e.LastName) as Name, e.City, e.Country, e.Region, e.HireDate
 	from Lab0_NorthwindDB.dbo.Employees e;
 	
 /* Insertar datos a dimCustomer de Customer */
-Insert into DimCustomer
+Insert into DWNorthwind.dbo.DimCustomer
 	select c.CustomerID, c.ContactName, c.City, c.Country, c.Region
 	from Lab0_NorthwindDB.dbo.Customers c;
 
 /* Insertar datos a dimProduct de Products + Suppliers + Categories */ 
-Insert into DimProduct
+Insert into DWNorthwind.dbo.DimProduct
 	select p.ProductID, p.ProductName, c.CategoryName, s.ContactName, s.Address, s.City, s.Region, s.PostalCode, s.Country
 	from Lab0_NorthwindDB.dbo.Products p, Lab0_NorthwindDB.dbo.Suppliers s, Lab0_NorthwindDB.dbo.Categories c
 	where p.CategoryID = c.CategoryID and p.SupplierID = s.SupplierID;
