@@ -6,13 +6,9 @@ where p.ProductID in
 	from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
 	where o.OrderID=od.OrderID and year(o.OrderDate)=1996
 	group by od.ProductID
-	order by count(od.ProductID) desc);
+	order by sum(od.Quantity) desc);
 
 /* Q2. Cual es el total de ventas (dinero) en 1996? */
-/*select o.freight
-from Lab0_NorthwindDB.dbo.Orders o
-where year(o.OrderDate) = 1996*/
-
 select sum(od.UnitPrice*od.Quantity*(1-od.discount)) as TotalVentas1996
 from Lab0_NorthwindDB.dbo.[Order Details] od, Lab0_NorthwindDB.dbo.Orders o
 where od.OrderID = o.OrderID and year(o.OrderDate) = 1996

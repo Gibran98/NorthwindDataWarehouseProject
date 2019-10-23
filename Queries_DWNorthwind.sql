@@ -6,7 +6,7 @@ where P.ProductID IN (
 	from  DWNorthwind.dbo.FactSales F
 	where year(F.orderDate) = 1996
 	group by F.ProductID
-	order by count(F.ProductID) desc
+	order by sum(F.Quantity) desc
 );
 
 /* Q2. Cual es el total de ventas (dinero) en 1996? */
