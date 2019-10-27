@@ -31,7 +31,7 @@ group by E.Region
 order by [Sales] desc;
 
 /* Q6. Para la respuesta de Q5 (region), cual es el estado (si es USA) o pais (region diferente a USA) que mas vendio en 1997? */
-select top(1) T.Place as 'Country or USA State', T.Sales
+select top(1) with ties T.Place as 'Country or USA State', T.Sales
 from (
   select E.Region as 'Place', sum(F.Total) as 'Sales'
   from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
