@@ -31,47 +31,19 @@ group by E.Region
 order by [Sales] desc;
 
 /* Q6. Para la respuesta de Q5 (region), cual es el estado (si es USA) o pais (region diferente a USA) que mas vendio en 1997? */
--- Opcion 1
-declare @country varchar(15);
-select top(1) @country=T.Country
-from (select top(1) E.Country, E.Region 
-  from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
-  where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997
-  group by E.Country, E.Region
-  order by sum(F.total) desc) as T;
-
-if @country = 'USA'
-begin
-  select top(1) E.Region, sum(F.Total) as 'Sales'
-  from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
-  where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997
-  group by E.Region
-  order by [Sales] desc;
-end
-else
-begin
-  select top(1) E.Country, sum(F.Total) as 'Sales'
-  from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
-  where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997
-  group by E.Country
-  order by [Sales] desc;
-end
-
--- Opcion 2
-select top(1) T.Places as 'Country or USA State', T.Sales
+select top(1) T.Place as 'Country or USA State', T.Sales
 from (
-  select top(1) E.Region as 'Places', sum(F.Total) as 'Sales'
+  select E.Region as 'Place', sum(F.Total) as 'Sales'
   from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
   where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997 and E.country = 'USA'
   group by E.Region
-  order by [Sales] desc
   union
-  select top(1) E.Country as 'Places', sum(F.Total) as 'Sales'
+  select E.Country as 'Place', sum(F.Total) as 'Sales'
   from DWNorthwind.dbo.DimEmployee E, DWNorthwind.dbo.FactSales F
   where E.EmployeeID = F.EmployeeID and year(F.OrderDate) = 1997 and E.Country != 'USA'
   group by E.Country
-  order by [Sales] desc
 ) as T
+order by T.Sales desc
 
 
 /* Q7. Cual es el total de ventas en total (todos los a�os) organizado por Region, Estado y/o pais? */
